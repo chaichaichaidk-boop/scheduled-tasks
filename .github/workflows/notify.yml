@@ -1,0 +1,27 @@
+name: PushPlus Notify
+
+on:
+  schedule:
+    # 每天北京时间 08:00 执行 (UTC时间 0点)
+    - cron: '0 4 * * *'
+  # 允许手动运行（方便测试）
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install requests
+
+      - name: Send notification
+        env:
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+          LF_TOKEN: ${{ secrets.LF_TOKEN }}
+        # 如果你 python 文件叫别的名字，这里记得改
+        run: python scripts/pushplus_notify.py
