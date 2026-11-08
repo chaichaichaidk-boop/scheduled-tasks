@@ -21,7 +21,11 @@ jobs:
 
       - run: pip install requests
 
-      - name: Send notification
-        env:
-          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
-        run: python scripts/pushplus_notify.py
+      - name: Send notification
+        env:
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+          LF_TOKEN: ${{ secrets.LF_TOKEN }} # 必须加上这个，不然 python 里读不到天街的 token
+        # 注意检查你的 python 文件到底叫什么，是 scripts/pushplus_notify.py 吗？
+        # 如果代码改成了我给你的天街签到版本，建议把文件名也改一下，比如 scripts/checkin.py
+        run: python scripts/pushplus_notify.py 
+
